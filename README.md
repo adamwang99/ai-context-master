@@ -85,10 +85,9 @@ code .
 npm install -g chub-dev
 
 # MemoryOS (Full Memory OS)
-# Already installed Bun, run:
+# Already included - no installation needed:
 cd MemoryOS
-bun install -g github:tobi/qmd
-memoryos init
+node bin/memoryos init
 ```
 
 ### Step 3: Apply Settings
@@ -265,8 +264,8 @@ chub search "OpenAI"
 
 # Test MemoryOS
 cd MemoryOS
-memoryos wake
-memoryos capture "Test memory"
+node bin/memoryos wake
+node bin/memoryos capture "Test memory"
 
 # Test Subagents
 # Open Claude Code and paste prompt from ULTIMATE_PROMPT.md
