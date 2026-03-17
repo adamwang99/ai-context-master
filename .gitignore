@@ -26,3 +26,6 @@ Thumbs.db
 
 # MemoryOS local config (user-specific)
 MemoryOS/.memoryos/config.json
+
+# Context export (local only - do not push)
+context-export/
