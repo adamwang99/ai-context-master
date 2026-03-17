@@ -308,7 +308,6 @@ async function handleWorkspaceChange(event) {
 async function injectTemplate(workspacePath) {
     const config = vscode.workspace.getConfiguration('aiContextMaster');
     const files = config.get('files', ['CLAUDE.md', 'SOUL.md', 'USER.md', 'GOVERNANCE.md', 'RULES.md']);
-    const autoYes = config.get('autoYes', false);
     const excludePatterns = config.get('excludePatterns', [
         '**/node_modules/**',
         '**/.git/**',
@@ -335,8 +334,7 @@ async function injectTemplate(workspacePath) {
             }
         }
     }
-    // Only show notification if not in auto-yes mode
-    if (createdCount > 0 && !autoYes) {
+    if (createdCount > 0) {
         vscode.window.showInformationMessage(`AI Context Master: Created ${createdCount} context file(s)!`);
     }
     return true;
@@ -358,27 +356,8 @@ async function applyToWorkspace() {
         vscode.window.showWarningMessage('No workspace folder open. Please open a folder first.');
         return;
     }
-    const config = vscode.workspace.getConfiguration('aiContextMaster');
-    const autoYes = config.get('autoYes', false);
-    const defaultFiles = ['CLAUDE.md', 'SOUL.md', 'USER.md', 'GOVERNANCE.md', 'RULES.md'];
-    let files;
-    if (autoYes) {
-        // Auto-yes mode: use default files without prompting
-        files = defaultFiles;
-    }
-    else {
-        // Normal mode: ask user to choose
-        const choice = await vscode.window.showQuickPick([
-            { label: 'Minimal', description: 'CLAUDE.md only', value: ['CLAUDE.md'] },
-            { label: 'Standard', description: 'Memory Stack files (5 files)', value: defaultFiles }
-        ], { placeHolder: 'Select template to apply' });
-        if (!choice) {
-            return;
-        }
-        files = choice.value;
-        // Save user preference
-        await config.update('aiContextMaster.files', files);
-    }
+    // Always use default files (5 context files)
+    const files = ['CLAUDE.md', 'SOUL.md', 'USER.md', 'GOVERNANCE.md', 'RULES.md'];
     // Apply to current workspace
     for (const folder of folders) {
         await injectTemplateWithFiles(folder.uri.fsPath, files);
@@ -422,11 +401,9 @@ async function injectTemplateWithFiles(workspacePath, files) {
 }
 async function quickSetup() {
     const config = vscode.workspace.getConfiguration('aiContextMaster');
-    const autoYes = config.get('autoYes', false);
     const autoInject = config.get('autoInject', true);
     const options = [
         { label: autoInject ? '✅ Disable Auto-Inject' : 'Enable Auto-Inject', description: autoInject ? 'Currently: ON' : 'Currently: OFF' },
-        { label: autoYes ? '✅ Disable Auto-Yes (Skip Prompts)' : 'Enable Auto-Yes (Skip Prompts)', description: autoYes ? 'Currently: ON' : 'Currently: OFF' },
         { label: 'Open Documentation', description: 'View AI Context Master docs' },
         { label: 'Configure Settings', description: 'Open settings.json' }
     ];
@@ -442,12 +419,6 @@ async function quickSetup() {
             const newAutoInject = !autoInject;
             await vscode.workspace.getConfiguration('aiContextMaster').update('aiContextMaster.autoInject', newAutoInject);
             vscode.window.showInformationMessage(`Auto-Inject ${newAutoInject ? 'enabled' : 'disabled'}!`);
-            break;
-        case 'Enable Auto-Yes (Skip Prompts)':
-        case '✅ Disable Auto-Yes (Skip Prompts)':
-            const newAutoYes = !autoYes;
-            await vscode.workspace.getConfiguration('aiContextMaster').update('aiContextMaster.autoYes', newAutoYes);
-            vscode.window.showInformationMessage(`Auto-Yes ${newAutoYes ? 'enabled' : 'disabled'}!`);
             break;
         case 'Open Documentation':
             vscode.commands.executeCommand('vscode.open', vscode.Uri.parse('https://github.com/adamwang99/ai-context-master'));

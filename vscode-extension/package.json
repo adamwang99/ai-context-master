@@ -2,7 +2,8 @@
   "name": "ai-context-master",
   "displayName": "AI Context Master",
   "description": "Automatically apply AI Context Master to any workspace - Memory Stack for Claude Code, Cursor, and all AI Assistants",
-  "version": "1.1.0",
+  "version": "1.2.0",
+  "icon": "icon.png",
   "publisher": "ai-context-master",
   "engines": {
     "vscode": "^1.85.0"
@@ -55,11 +56,6 @@
           "type": "boolean",
           "default": true,
           "description": "Automatically inject context files when opening a folder"
-        },
-        "aiContextMaster.autoYes": {
-          "type": "boolean",
-          "default": false,
-          "description": "Skip confirmation prompts and apply automatically"
         },
         "aiContextMaster.templateSource": {
           "type": "string",
