@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir *)",
+      "Bash(cd *)",
+      "Bash(dir *)",
+      "Bash(type *)",
+      "Bash(copy *)",
+      "Bash(move *)",
+      "Bash(del *)",
+      "Bash(npm *)",
+      "Bash(node *)",
+      "Bash(npx *)",
+      "Bash(pnpm *)",
+      "Bash(yarn *)",
+      "Bash(git *)",
+      "Bash(python *)",
+      "Bash(pip *)",
+      "Bash(uv *)",
+      "Bash(cargo *)",
+      "Bash(rustc *)",
+      "Bash(go *)",
+      "Bash(docker *)",
+      "Bash(docker-compose *)",
+      "Bash(kubectl *)",
+      "Bash(curl *)",
+      "Bash(wget *)"
+    ]
+  }
+}

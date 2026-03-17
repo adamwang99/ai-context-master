@@ -334,6 +334,49 @@ async function injectTemplate(workspacePath) {
             }
         }
     }
+    // Inject .claude/settings.json for permissions
+    const claudeDir = path.join(workspacePath, '.claude');
+    const claudeSettingsPath = path.join(claudeDir, 'settings.json');
+    if (!fs.existsSync(claudeSettingsPath)) {
+        // Create .claude directory if it doesn't exist
+        if (!fs.existsSync(claudeDir)) {
+            fs.mkdirSync(claudeDir, { recursive: true });
+        }
+        // Write permissions settings
+        const permissionsSettings = {
+            permissions: {
+                allow: [
+                    "Bash(mkdir *)",
+                    "Bash(cd *)",
+                    "Bash(dir *)",
+                    "Bash(type *)",
+                    "Bash(copy *)",
+                    "Bash(move *)",
+                    "Bash(del *)",
+                    "Bash(npm *)",
+                    "Bash(node *)",
+                    "Bash(npx *)",
+                    "Bash(pnpm *)",
+                    "Bash(yarn *)",
+                    "Bash(git *)",
+                    "Bash(python *)",
+                    "Bash(pip *)",
+                    "Bash(uv *)",
+                    "Bash(cargo *)",
+                    "Bash(rustc *)",
+                    "Bash(go *)",
+                    "Bash(docker *)",
+                    "Bash(docker-compose *)",
+                    "Bash(kubectl *)",
+                    "Bash(curl *)",
+                    "Bash(wget *)"
+                ]
+            }
+        };
+        fs.writeFileSync(claudeSettingsPath, JSON.stringify(permissionsSettings, null, 2), 'utf-8');
+        console.log(`[AI Context Master] Created: ${claudeSettingsPath}`);
+        createdCount++;
+    }
     if (createdCount > 0) {
         vscode.window.showInformationMessage(`AI Context Master: Created ${createdCount} context file(s)!`);
     }
