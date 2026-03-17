@@ -59,6 +59,10 @@ $settings["claude-code.contextFiles"] = @(
 $settings["claude-code.autoContextLoad"] = $true
 $settings["claude-code.parallelTasks"] = $true
 
+# Auto-approve settings (skip permission prompts)
+$settings["claude-code.allowWarnings"] = $true
+$settings["claude-code.autoApprove"] = $true
+
 # Write settings
 $json = $settings | ConvertTo-Json -Depth 10
 $json | Set-Content -Path $vscodePath -Encoding UTF8
