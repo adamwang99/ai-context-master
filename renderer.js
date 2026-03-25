@@ -42,10 +42,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Tạm thời, nút Generate chưa làm gì
-    btnGenerate.addEventListener('click', () => {
-        alert('Chức năng "Tạo File" sẽ được thực hiện ở Task 2!');
-        // Ở Task 2, chúng ta sẽ thu thập dữ liệu và gửi cho main.js tại đây
+    // Tạo file mô tả nhiệm vụ
+    btnGenerate.addEventListener('click', async () => {
+        const data = {
+            // Bước 1
+            projectPath: document.getElementById('project-path').value,
+            taskName: document.getElementById('task-name').value,
+            taskDesc: document.getElementById('task-desc').value,
+            // Bước 2
+            coreLogic: document.getElementById('core-logic').value,
+            relatedFiles: document.getElementById('related-files').value,
+            // Bước 3
+            backupConfirm: document.getElementById('backup-confirm').checked,
+            guardFunctions: document.getElementById('guard-functions').value,
+            checkSyntax: document.getElementById('check-syntax').checked,
+            checkLogic: document.getElementById('check-logic').checked
+        };
+
+        if (window.electronAPI) {
+            const result = await window.electronAPI.createFile(data);
+            if (result.success) {
+                alert(result.message);
+            } else {
+                alert(result.message);
+            }
+        } else {
+            alert('Lỗi: electronAPI khong duoc tim thay. Kiem tra lai file preload.js.');
+        }
     });
 
     // Hiển thị bước 1 ban đầu
